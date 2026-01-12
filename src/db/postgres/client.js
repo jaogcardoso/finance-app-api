@@ -1,4 +1,7 @@
+import dotenv from 'dotenv'
 import pg from 'pg'
+
+dotenv.config()
 
 const { Pool } = pg
 
@@ -7,7 +10,7 @@ export const pool = new Pool({
   password: process.env.POSTGRES_PASSWORD,
   port: process.env.POSTGRES_PORT,
   database: process.env.POSTGRES_DATABASE,
-  host: process.env.POSTGRES_HOST
+  host: process.env.POSTGRES_HOST,
 })
 
 export const PostgresHelper = {
