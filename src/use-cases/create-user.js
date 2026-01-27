@@ -6,7 +6,7 @@ import { EmailAlreadyInUseError } from '../errors/user.js'
 
 export class CreateUserUseCase {
   async execute(createUserParams) {
-    //TODO: verificar se o e-mail ja esta em uso
+
     const postgresGetUserByEmailRepository = new PostgresGetUserByEmailRepository()
 
     const userWithProvideEmail = await postgresGetUserByEmailRepository.execute(createUserParams.email)
