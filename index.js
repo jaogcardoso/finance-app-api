@@ -4,12 +4,19 @@ import {
   CreateUserController,
   UpdateUserController,
   GetUserByIdController,
+  DeleteUserController,
 } from './src/controllers/index.js'
 
 dotenv.config()
 
 const app = express()
 app.use(express.json())
+
+app.get('/api/users/:userId', async (request, response) => {
+  const getUserByIdController = new GetUserByIdController()
+  const { statusCode, body } = await getUserByIdController.execute(request)
+  response.status(statusCode).send(body)
+})
 
 app.post('/api/users', async (request, response) => {
   const createUserController = new CreateUserController()
@@ -19,16 +26,16 @@ app.post('/api/users', async (request, response) => {
   response.status(createUserResponse.statusCode).json(createUserResponse.body)
 })
 
-app.patch('/api/users/:userid', async (request, response) => {
+app.patch('/api/users/:userId', async (request, response) => {
   const updateUserController = new UpdateUserController()
 
   const { statusCode, body } = await updateUserController.execute(request)
   response.status(statusCode).send(body)
 })
 
-app.get('/api/users/:userId', async (request, response) => {
-  const getUserByIdController = new GetUserByIdController()
-  const { statusCode, body } = await getUserByIdController.execute(request)
+app.delete('/api/users/:userId', async (request, response) => {
+  const deleteUserController = new DeleteUserController()
+  const { statusCode, body } = await deleteUserController.execute(request)
   response.status(statusCode).send(body)
 })
 
