@@ -2,15 +2,17 @@ import dotenv from 'dotenv'
 import express from 'express'
 import {
   CreateUserController,
-  UpdateUserController,
   GetUserByIdController,
   DeleteUserController,
+  UpdateUserController,
 } from './src/controllers/index.js'
 import { PostgresCreateUserRepository } from './src/repositories/postgres/create-user.js'
 import { GetUserByIdUseCase } from './src/use-cases/get-user-by-id.js'
 import { CreateUserUseCase } from './src/use-cases/create-user.js'
 import { PostgresGetUserByEmailRepository } from './src/repositories/postgres/get-user-by-email.js'
 import { postgresGetUserByIdRepository } from './src/repositories/postgres/get-user-by-id.js'
+import { PostgresUpdateUserRepository } from './src/repositories/postgres/update-user.js'
+import { UpdateUserUseCase } from './src/use-cases/update-user.js'
 
 dotenv.config()
 
@@ -30,7 +32,7 @@ app.get('/api/users/:userId', async (request, response) => {
 
 app.post('/api/users', async (request, response) => {
   const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
-  
+
   const createUserRepository = new PostgresCreateUserRepository()
 
   const createUserUseCase = new CreateUserUseCase(
@@ -46,7 +48,16 @@ app.post('/api/users', async (request, response) => {
 })
 
 app.patch('/api/users/:userId', async (request, response) => {
-  const updateUserController = new UpdateUserController()
+  const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
+
+  const updateUserRepository = new PostgresUpdateUserRepository()
+
+  const updateUserUseCase = new UpdateUserUseCase(
+    getUserByEmailRepository,
+    updateUserRepository,
+  )
+
+  const updateUserController = new UpdateUserController(updateUserUseCase)
 
   const { statusCode, body } = await updateUserController.execute(request)
   response.status(statusCode).send(body)
