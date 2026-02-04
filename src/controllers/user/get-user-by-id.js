@@ -4,10 +4,10 @@ import {
   ok,
   serverError,
   userNotFoundResponse,
-} from './helpers/index.js'
+} from '../helpers/index.js'
 
 export class GetUserByIdController {
-  constructor(getUserByIdUseCase){
+  constructor(getUserByIdUseCase) {
     this.getUserByIdUseCase = getUserByIdUseCase
   }
   async execute(httpRequest) {
@@ -18,7 +18,9 @@ export class GetUserByIdController {
         return invalidIdResponse
       }
 
-      const user = await this.getUserByIdUseCase.execute(httpRequest.params.userId)
+      const user = await this.getUserByIdUseCase.execute(
+        httpRequest.params.userId,
+      )
 
       if (!user) {
         return userNotFoundResponse()
