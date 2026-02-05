@@ -1,9 +1,11 @@
-import validator from 'validator'
 import {
-  badRequest,
-  checkIfIdIsValid,
+   checkIfIdIsValid,
+  checkIfTypeIsValid,
+  checkIfValueIsValid,
   created,
   invalidIdResponse,
+  invalidTypeResponse,
+  invalidValueResponse,
   requiredFieldsIsMissingResponse,
   serverError,
   validadeRequiredFields,
@@ -20,10 +22,8 @@ export class CreateTransactionController {
 
       const requiredFields = ['user_id', 'name', 'date', 'value', 'type']
 
-      const {ok: requiredFieldWereProvided, missingField} = validadeRequiredFields(
-        params,
-        requiredFields,
-      )
+      const { ok: requiredFieldWereProvided, missingField } =
+        validadeRequiredFields(params, requiredFields)
 
       if (!requiredFieldWereProvided) {
         return requiredFieldsIsMissingResponse(missingField)
@@ -35,26 +35,18 @@ export class CreateTransactionController {
         return invalidIdResponse()
       }
 
-      const valueIsValid = validator.isCurrency(params.value.toString(), {
-        digits_after_decimal: [2],
-        allow_negatives: false,
-        decimal_separator: '.',
-      })
+      const valueIsValid = checkIfValueIsValid(params.value)
 
       if (!valueIsValid) {
-        return badRequest({
-          message: 'The value must be a valid currency',
-        })
+        return invalidValueResponse
       }
 
       const type = params.type.trim().toUpperCase()
 
-      const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type)
+      const typeIsValid = checkIfTypeIsValid(params.type)
 
       if (!typeIsValid) {
-        return badRequest({
-          message: 'The type must be valid',
-        })
+        return invalidTypeResponse
       }
 
       const transaction = await this.createTransactionUseCase.execute({
