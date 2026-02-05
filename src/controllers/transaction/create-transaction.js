@@ -17,7 +17,7 @@ export class CreateTransactionController {
     try {
       const params = httpRequest.body
 
-      const requiredFields = ['id', 'user_id', 'name', 'date', 'value', 'type']
+      const requiredFields = ['user_id', 'name', 'date', 'value', 'type']
 
       const requiredFieldsValidation = validadeRequiredFields(
         params,
@@ -26,7 +26,7 @@ export class CreateTransactionController {
 
       if (!requiredFieldsValidation.ok) {
         return badRequest({
-          message: `The field ${requiredFieldsValidation.missingField}`,
+          message: `The field ${requiredFieldsValidation.missingField} is missing`,
         })
       }
 

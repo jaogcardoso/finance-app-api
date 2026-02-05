@@ -8,7 +8,7 @@ import {
   PostgresCreateUserRepository,
   PostgresDeleteUserRepository,
   PostgresGetUserByEmailRepository,
-  postgresGetUserByIdRepository,
+  PostgresGetUserByIdRepository,
   PostgresUpdateUserRepository,
 } from '../../repositories/postgres/index.js'
 import {
@@ -19,7 +19,7 @@ import {
 } from '../../use-cases/index.js'
 
 export const makeGetUserByIdController = () => {
-  const getUserByIdRepository = new postgresGetUserByIdRepository()
+  const getUserByIdRepository = new PostgresGetUserByIdRepository()
 
   const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository)
 
