@@ -1,5 +1,5 @@
 import {
-   checkIfIdIsValid,
+  checkIfIdIsValid,
   checkIfTypeIsValid,
   checkIfValueIsValid,
   created,
@@ -38,7 +38,7 @@ export class CreateTransactionController {
       const valueIsValid = checkIfValueIsValid(params.value)
 
       if (!valueIsValid) {
-        return invalidValueResponse
+        return invalidValueResponse()
       }
 
       const type = params.type.trim().toUpperCase()
@@ -46,7 +46,7 @@ export class CreateTransactionController {
       const typeIsValid = checkIfTypeIsValid(params.type)
 
       if (!typeIsValid) {
-        return invalidTypeResponse
+        return invalidTypeResponse()
       }
 
       const transaction = await this.createTransactionUseCase.execute({
