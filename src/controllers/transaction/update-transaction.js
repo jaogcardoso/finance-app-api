@@ -11,13 +11,13 @@ import {
 } from '../helpers/index.js'
 
 export class UpdateTransactionController {
-constructor(updateTransactionUseCase){
+  constructor(updateTransactionUseCase) {
     this.updateTransactionUseCase = updateTransactionUseCase
-}
+  }
 
   async execute(httpRequest) {
     try {
-      const idIsValid = checkIfIdIsValid(httpRequest.params.transctionId)
+      const idIsValid = checkIfIdIsValid(httpRequest.params.transactionId)
 
       if (!idIsValid) {
         return invalidIdResponse()
@@ -44,15 +44,19 @@ constructor(updateTransactionUseCase){
         }
       }
 
-      if (params.type) {
+      if ('type' in params) {
         const typeIsValid = checkIfTypeIsValid(params.type)
 
         if (!typeIsValid) {
           return invalidTypeResponse()
         }
+        params.type = params.type.toUpperCase()
       }
 
-      const transaction = await this.updateTransactionUseCase.execute(httpRequest.params.transctionId,params)
+      const transaction = await this.updateTransactionUseCase.execute(
+        httpRequest.params.transactionId,
+        params,
+      )
 
       return ok(transaction)
     } catch (error) {
