@@ -1,7 +1,7 @@
 import { UserNotFoundError } from '../../errors/user.js'
-import { serverError, userNotFoundResponse, checkIfIdIsValid, invalidIdResponse, ok } from '../helpers.js'
+import { serverError, userNotFoundResponse, checkIfIdIsValid, invalidIdResponse, ok } from '../helpers/index.js'
 
-export class GetUserController {
+export class GetUserBalanceController {
   constructor(getUserBalanceUseCase) {
     this.getUserBalanceUseCase = getUserBalanceUseCase
   }
