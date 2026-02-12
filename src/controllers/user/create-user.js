@@ -11,15 +11,9 @@ export class CreateUserController {
     try {
       const params = httpRequest.body
 
-      // validar a requisição (campos obrigatorios, tamanho de senha e email)
-
       await createUserSchema.parseAsync(params)
 
-      // chamar o use case
-
       const createdUser = await this.createUserUseCase.execute(params)
-
-      // retornar a resposta para o usuario (status code)
 
       return created(createdUser)
     } catch (error) {

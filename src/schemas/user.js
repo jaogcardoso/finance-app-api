@@ -19,7 +19,7 @@ export const createUserSchema = z.object({
     }),
   email: z
     .email({
-      message: 'E-mail is invalid our in use.',
+      required_error: 'E-mail is invalid our in use.',
     })
     .min(1)
     .trim(),
@@ -32,3 +32,5 @@ export const createUserSchema = z.object({
       message: 'Password to small.',
     }),
 })
+
+export const updateUserSchema = createUserSchema.partial().strict()
