@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17
-    container_name: financeapp-postgres
+    container_name: finance-app-postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: senha
@@ -10,7 +10,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:

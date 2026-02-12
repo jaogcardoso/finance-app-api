@@ -7,6 +7,8 @@ export class PostgresGetUserByIdRepository {
       [userId],
     )
 
+    console.log('🔍 resultado bruto do banco:', user)
+
     return user[0]
   }
 }
