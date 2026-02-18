@@ -1,3 +1,6 @@
+import 'dotenv/config'
+console.log(process.env.DATABASE_URL)
+
 import dotenv from 'dotenv'
 import express from 'express'
 import {

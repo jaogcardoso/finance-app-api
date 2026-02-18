@@ -15,19 +15,23 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@prisma/adapter-pg": "^7.4.0",
+    "@prisma/client": "^7.4.0",
+    "dotenv": "^17.3.1",
     "eslint": "^9.39.2",
+    "express": "^5.2.1",
     "git-commit-msg-linter": "^5.0.8",
     "globals": "^17.0.0",
     "husky": "^9.1.7",
+    "install": "^0.13.0",
     "lint-staged": "^16.2.7",
+    "npm": "^11.10.0",
+    "pg": "^8.18.0",
     "prettier": "^3.7.4",
     "prisma": "^7.4.0"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "pg": "^8.16.3",
     "uuid": "^13.0.0",
     "validator": "^13.15.26",
     "zod": "^4.3.6"
