@@ -5,7 +5,7 @@ export class PostgresCreateTransactionRepository {
     const createdTransaction = await PostgresHelper.query(
       `
         INSERT INTO
-        transactions (id, user_id, name, date, value, type)
+        Transaction (id, user_id, name, date, value, type)
         VALUES($1,$2,$3,$4,$5,$6)
         RETURNING *
        `,
