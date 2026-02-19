@@ -1,6 +1,4 @@
 import 'dotenv/config'
-console.log(process.env.DATABASE_URL)
-
 import dotenv from 'dotenv'
 import express from 'express'
 import {
@@ -8,6 +6,7 @@ import {
   makeDeleteUserController,
   makeGetUserBalanceController,
   makeGetUserByIdController,
+  makeLoginUserController,
   makeUpdateUserController,
 } from './src/factories/controllers/user.js'
 import {
@@ -21,6 +20,13 @@ dotenv.config()
 
 const app = express()
 app.use(express.json())
+
+app.post('/api/login', async (request, response) => {
+  const loginUserController = makeLoginUserController()
+
+  const {statusCode, body} = await loginUserController.execute(request)
+  response.status(statusCode).send(body)
+})
 
 app.get('/api/users/:userId', async (request, response) => {
   const getUserByIdController = makeGetUserByIdController()
