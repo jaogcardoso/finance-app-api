@@ -15,6 +15,7 @@ import {
   makeGetTransactionByUserIdController,
   makeUpdateTransactionController,
 } from './src/factories/controllers/transaction.js'
+import { auth } from './src/middlewares/auth.js'
 
 dotenv.config()
 
@@ -24,18 +25,18 @@ app.use(express.json())
 app.post('/api/login', async (request, response) => {
   const loginUserController = makeLoginUserController()
 
-  const {statusCode, body} = await loginUserController.execute(request)
+  const { statusCode, body } = await loginUserController.execute(request)
   response.status(statusCode).send(body)
 })
 
-app.get('/api/users/:userId', async (request, response) => {
+app.get('/api/users/:userId', auth, async (request, response) => {
   const getUserByIdController = makeGetUserByIdController()
 
   const { statusCode, body } = await getUserByIdController.execute(request)
   response.status(statusCode).send(body)
 })
 
-app.get('/api/users/:userId/balance', async (request, response) => {
+app.get('/api/users/:userId/balance', auth, async (request, response) => {
   const getUserBalanceController = makeGetUserBalanceController()
 
   const { statusCode, body } = await getUserBalanceController.execute(request)
@@ -50,21 +51,21 @@ app.post('/api/users', async (request, response) => {
   response.status(createUserResponse.statusCode).json(createUserResponse.body)
 })
 
-app.patch('/api/users/:userId', async (request, response) => {
+app.patch('/api/users/:userId', auth, async (request, response) => {
   const updateUserController = makeUpdateUserController()
 
   const { statusCode, body } = await updateUserController.execute(request)
   response.status(statusCode).send(body)
 })
 
-app.delete('/api/users/:userId', async (request, response) => {
+app.delete('/api/users/:userId', auth, async (request, response) => {
   const deleteUserController = makeDeleteUserController()
 
   const { statusCode, body } = await deleteUserController.execute(request)
   response.status(statusCode).send(body)
 })
 
-app.get('/api/transactions', async (request, response) => {
+app.get('/api/transactions', auth, async (request, response) => {
   const getTransactionsByUserIdController =
     makeGetTransactionByUserIdController()
 
@@ -73,7 +74,7 @@ app.get('/api/transactions', async (request, response) => {
   response.status(statusCode).send(body)
 })
 
-app.post('/api/transactions', async (request, response) => {
+app.post('/api/transactions', auth, async (request, response) => {
   const createTransactionController = makeCreateTransactionController()
 
   const { statusCode, body } =
@@ -81,7 +82,7 @@ app.post('/api/transactions', async (request, response) => {
   response.status(statusCode).send(body)
 })
 
-app.patch('/api/transactions/:transactionId', async (request, response) => {
+app.patch('/api/transactions/:transactionId', auth, async (request, response) => {
   const updateTransactionController = makeUpdateTransactionController()
 
   const { statusCode, body } =
@@ -89,7 +90,7 @@ app.patch('/api/transactions/:transactionId', async (request, response) => {
   response.status(statusCode).send(body)
 })
 
-app.delete('/api/transactions/:transactionId', async (request, response) => {
+app.delete('/api/transactions/:transactionId', auth, async (request, response) => {
   const deleteTransactionController = makeDeleteTransactionController()
 
   const { statusCode, body } =
