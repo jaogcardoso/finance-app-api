@@ -3,9 +3,10 @@ import bcrypt from 'bcrypt'
 import { EmailAlreadyInUseError } from '../../errors/user.js'
 
 export class CreateUserUseCase {
-  constructor(getUserByEmailRepository, createUserRepository) {
+  constructor(getUserByEmailRepository, createUserRepository,) {
     this.getUserByEmailRepository = getUserByEmailRepository
     this.createUserRepository = createUserRepository
+
   }
 
   async execute(createUserParams) {

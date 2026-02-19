@@ -40,6 +40,7 @@ export const makeCreateUserController = () => {
   const createUserUseCase = new CreateUserUseCase(
     getUserByEmailRepository,
     createUserRepository,
+
   )
 
   const createUserController = new CreateUserController(createUserUseCase)
