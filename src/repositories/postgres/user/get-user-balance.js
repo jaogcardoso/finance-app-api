@@ -36,6 +36,11 @@ export class PostgresGetUserBalanceRepository {
       totalExpenses._sum.value -
       totalInvestments._sum.value
 
-    return balance
+    return {
+      earnings: totalEarnings._sum.value,
+      expenses: totalExpenses._sum.value,
+      investements: totalInvestments._sum.value,
+      balance,
+    }
   }
 }
