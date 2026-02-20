@@ -31,3 +31,9 @@ export const createTransactionSchema = z.object({
       }),
     ),
 })
+
+export const getTransactionsByUserIdSchema = z.object({
+  user_id: z.uuid(),
+  from: z.date(),
+  to: z.date()
+})
