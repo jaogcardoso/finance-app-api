@@ -29,17 +29,27 @@ app.post('/api/login', async (request, response) => {
   response.status(statusCode).send(body)
 })
 
-app.get('/api/users/:userId', auth, async (request, response) => {
+app.get('/api/users/', auth, async (request, response) => {
   const getUserByIdController = makeGetUserByIdController()
 
-  const { statusCode, body } = await getUserByIdController.execute(request)
+  const { statusCode, body } = await getUserByIdController.execute({
+    ...request,
+    params: {
+      userId: request.userId,
+    },
+  })
   response.status(statusCode).send(body)
 })
 
-app.get('/api/users/:userId/balance', auth, async (request, response) => {
+app.get('/api/users/balance', auth, async (request, response) => {
   const getUserBalanceController = makeGetUserBalanceController()
 
-  const { statusCode, body } = await getUserBalanceController.execute(request)
+  const { statusCode, body } = await getUserBalanceController.execute({
+    ...request,
+    params: {
+      userId: request.userId,
+    },
+  })
   response.status(statusCode).send(body)
 })
 
@@ -51,17 +61,27 @@ app.post('/api/users', async (request, response) => {
   response.status(createUserResponse.statusCode).json(createUserResponse.body)
 })
 
-app.patch('/api/users/:userId', auth, async (request, response) => {
+app.patch('/api/users', auth, async (request, response) => {
   const updateUserController = makeUpdateUserController()
 
-  const { statusCode, body } = await updateUserController.execute(request)
+  const { statusCode, body } = await updateUserController.execute({
+    ...request,
+      params: {
+        userId: request.userId,
+      }
+  })
   response.status(statusCode).send(body)
 })
 
-app.delete('/api/users/:userId', auth, async (request, response) => {
+app.delete('/api/users', auth, async (request, response) => {
   const deleteUserController = makeDeleteUserController()
 
-  const { statusCode, body } = await deleteUserController.execute(request)
+  const { statusCode, body } = await deleteUserController.execute({
+    ...request,
+      params: {
+        userId: request.userId,
+      }
+  })
   response.status(statusCode).send(body)
 })
 
@@ -70,7 +90,12 @@ app.get('/api/transactions', auth, async (request, response) => {
     makeGetTransactionByUserIdController()
 
   const { statusCode, body } =
-    await getTransactionsByUserIdController.execute(request)
+    await getTransactionsByUserIdController.execute({
+    ...request,
+      params: {
+        userId: request.userId,
+      }
+  })
   response.status(statusCode).send(body)
 })
 
@@ -82,21 +107,29 @@ app.post('/api/transactions', auth, async (request, response) => {
   response.status(statusCode).send(body)
 })
 
-app.patch('/api/transactions/:transactionId', auth, async (request, response) => {
-  const updateTransactionController = makeUpdateTransactionController()
+app.patch(
+  '/api/transactions/:transactionId',
+  auth,
+  async (request, response) => {
+    const updateTransactionController = makeUpdateTransactionController()
 
-  const { statusCode, body } =
-    await updateTransactionController.execute(request)
-  response.status(statusCode).send(body)
-})
+    const { statusCode, body } =
+      await updateTransactionController.execute(request)
+    response.status(statusCode).send(body)
+  },
+)
 
-app.delete('/api/transactions/:transactionId', auth, async (request, response) => {
-  const deleteTransactionController = makeDeleteTransactionController()
+app.delete(
+  '/api/transactions/:transactionId',
+  auth,
+  async (request, response) => {
+    const deleteTransactionController = makeDeleteTransactionController()
 
-  const { statusCode, body } =
-    await deleteTransactionController.execute(request)
-  response.status(statusCode).send(body)
-})
+    const { statusCode, body } =
+      await deleteTransactionController.execute(request)
+    response.status(statusCode).send(body)
+  },
+)
 
 app.listen(process.env.PORT, () => {
   console.log('🚀 Server running on')
