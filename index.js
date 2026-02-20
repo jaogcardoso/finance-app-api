@@ -66,9 +66,9 @@ app.patch('/api/users', auth, async (request, response) => {
 
   const { statusCode, body } = await updateUserController.execute({
     ...request,
-      params: {
-        userId: request.userId,
-      }
+    params: {
+      userId: request.userId,
+    },
   })
   response.status(statusCode).send(body)
 })
@@ -78,9 +78,9 @@ app.delete('/api/users', auth, async (request, response) => {
 
   const { statusCode, body } = await deleteUserController.execute({
     ...request,
-      params: {
-        userId: request.userId,
-      }
+    params: {
+      userId: request.userId,
+    },
   })
   response.status(statusCode).send(body)
 })
@@ -89,12 +89,12 @@ app.get('/api/transactions', auth, async (request, response) => {
   const getTransactionsByUserIdController =
     makeGetTransactionByUserIdController()
 
-  const { statusCode, body } =
-    await getTransactionsByUserIdController.execute({
+  const { statusCode, body } = await getTransactionsByUserIdController.execute({
     ...request,
-      params: {
-        userId: request.userId,
-      }
+    query: {
+      ...request.query,
+      userId: request.userId,
+    },
   })
   response.status(statusCode).send(body)
 })
@@ -103,7 +103,13 @@ app.post('/api/transactions', auth, async (request, response) => {
   const createTransactionController = makeCreateTransactionController()
 
   const { statusCode, body } =
-    await createTransactionController.execute(request)
+    await createTransactionController.execute({
+      ...request,
+      body: {
+        ...request.body,
+        user_id: request.userId
+      }
+    })
   response.status(statusCode).send(body)
 })
 
@@ -114,7 +120,13 @@ app.patch(
     const updateTransactionController = makeUpdateTransactionController()
 
     const { statusCode, body } =
-      await updateTransactionController.execute(request)
+      await updateTransactionController.execute({
+        ...request,
+        body: {
+          ...request.body,
+          user_id: request.userId
+        }
+      })
     response.status(statusCode).send(body)
   },
 )

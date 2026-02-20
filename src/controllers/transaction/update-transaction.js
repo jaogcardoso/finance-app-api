@@ -1,13 +1,14 @@
+import { ForbiddenError } from '../../errors/user.js'
 import {
   checkIfIdIsValid,
   invalidIdResponse,
   serverError,
-  badRequest,
   checkIfValueIsValid,
   invalidValueResponse,
   checkIfTypeIsValid,
   invalidTypeResponse,
   ok,
+  forbidden,
 } from '../helpers/index.js'
 
 export class UpdateTransactionController {
@@ -26,15 +27,13 @@ export class UpdateTransactionController {
       const params = httpRequest.body
 
       const allowedFields = ['name', 'date', 'value', 'type']
+      const filteredParams = {}
 
-      const someFieldIsNotAllowed = Object.keys(params).some(
-        (field) => !allowedFields.includes(field),
-      )
-      if (someFieldIsNotAllowed) {
-        return badRequest({
-          message: 'Some provided field is not allowed.',
-        })
-      }
+      for (const field of allowedFields) {
+  if (field in params) {
+    filteredParams[field] = params[field]
+  }
+}
 
       if (params.value) {
         const valueIsValid = checkIfValueIsValid(params.value)
@@ -61,6 +60,9 @@ export class UpdateTransactionController {
       return ok(transaction)
     } catch (error) {
       console.error(error)
+      if (error instanceof ForbiddenError) {
+        return forbidden()
+      }
       return serverError()
     }
   }
