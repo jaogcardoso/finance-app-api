@@ -1,4 +1,4 @@
-import { UserNotFoundError } from "../../errors/user.js"
+import { UserNotFoundError } from '../../errors/user.js'
 
 export class GetUserBalanceUseCase {
   constructor(getUserBalanceRepository, getUserByIdRepository) {
@@ -6,14 +6,18 @@ export class GetUserBalanceUseCase {
     this.getUserByIdRepository = getUserByIdRepository
   }
 
-  async execute(params) {
+  async execute(params, from, to) {
     const user = await this.getUserByIdRepository.execute(params.userId)
 
     if (!user) {
       throw new UserNotFoundError()
     }
 
-    const balance = await this.getUserBalanceRepository.execute(params.userId)
+    const balance = await this.getUserBalanceRepository.execute(
+      params.userId,
+      from,
+      to,
+    )
     return balance
   }
 }
