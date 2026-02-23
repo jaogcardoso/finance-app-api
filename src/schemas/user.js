@@ -49,7 +49,7 @@ export const loginSchema = z.object({
 })
 
 export const getUserBalanceSchema = z.object({
-  user_id: z.uuid(),
-  from: z.date(),
-  to: z.date(),
+  userId: z.uuid(),
+  from: z.coerce.date(),
+  to: z.coerce.date(),
 })
