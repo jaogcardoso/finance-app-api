@@ -51,8 +51,8 @@ app.get('/api/users/balance', auth, async (request, response) => {
     },
     query: {
       from: request.query.from,
-      to: request.query.to
-    }
+      to: request.query.to,
+    },
   })
   response.status(statusCode).send(body)
 })
@@ -108,14 +108,13 @@ app.get('/api/transactions', auth, async (request, response) => {
 app.post('/api/transactions', auth, async (request, response) => {
   const createTransactionController = makeCreateTransactionController()
 
-  const { statusCode, body } =
-    await createTransactionController.execute({
-      ...request,
-      body: {
-        ...request.body,
-        user_id: request.userId
-      }
-    })
+  const { statusCode, body } = await createTransactionController.execute({
+    ...request,
+    body: {
+      ...request.body,
+      user_id: request.userId,
+    },
+  })
   response.status(statusCode).send(body)
 })
 
@@ -125,14 +124,13 @@ app.patch(
   async (request, response) => {
     const updateTransactionController = makeUpdateTransactionController()
 
-    const { statusCode, body } =
-      await updateTransactionController.execute({
-        ...request,
-        body: {
-          ...request.body,
-          user_id: request.userId
-        }
-      })
+    const { statusCode, body } = await updateTransactionController.execute({
+      ...request,
+      body: {
+        ...request.body,
+        user_id: request.userId,
+      },
+    })
     response.status(statusCode).send(body)
   },
 )
@@ -143,8 +141,12 @@ app.delete(
   async (request, response) => {
     const deleteTransactionController = makeDeleteTransactionController()
 
-    const { statusCode, body } =
-      await deleteTransactionController.execute(request)
+    const { statusCode, body } = await deleteTransactionController.execute({
+      params: {
+        transactionId: request.params.transactionId,
+        user_id: request.userId,
+      },
+    })
     response.status(statusCode).send(body)
   },
 )
