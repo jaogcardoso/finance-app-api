@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken'
 
 export const auth = (request, response, next) => {
   try {
+     console.log('HEADERS COMPLETOS:', request.headers)
+
     const accessToken = request.headers?.authorization?.split('Bearer ')[1]
     if (!accessToken) {
       return response.status(401).send({ message: 'Unauthorized' })

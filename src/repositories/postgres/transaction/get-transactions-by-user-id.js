@@ -6,8 +6,8 @@ export class PostgresGetTransactionsByUserIdRepository {
       where: {
         user_id: userId,
         date: {
-          gte: new Date(from),
-          lte: new Date(to),
+          gte: from,
+          lte: to,
         },
       },
     })

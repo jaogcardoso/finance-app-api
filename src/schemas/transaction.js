@@ -13,7 +13,7 @@ export const createTransactionSchema = z.object({
       message: 'Name is required.',
     }),
   date: z.string().datetime({
-    message: 'Date must be a valid'
+    message: 'Date must be a valid',
   }),
   type: z.enum(['EXPENSE', 'EARNING', 'INVESTMENT']),
   value: z
@@ -34,6 +34,6 @@ export const createTransactionSchema = z.object({
 
 export const getTransactionsByUserIdSchema = z.object({
   user_id: z.uuid(),
-  from: z.date(),
-  to: z.date()
+  from: z.coerce.date(),
+  to: z.coerce.date(),
 })

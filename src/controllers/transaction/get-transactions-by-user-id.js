@@ -18,16 +18,18 @@ export class GetTransactionsByUserIdController {
       const from = httpRequest.query.from
       const to = httpRequest.query.to
 
-      await getTransactionsByUserIdSchema.parseAsync({
-        user_id: userId,
-        from,
-        to,
-      })
+      const { from: parsedFrom, to: parsedTo } =
+        await getTransactionsByUserIdSchema.parseAsync({
+          user_id: userId,
+          from,
+          to,
+        })
 
-      const transactions = await this.getTransactionsByUserIdUseCase.execute({
-        userId, from, to
-      })
-
+      const transactions = await this.getTransactionsByUserIdUseCase.execute(
+        userId,
+        parsedFrom,
+        parsedTo,
+      )
       return ok(transactions)
     } catch (error) {
       console.error(error)

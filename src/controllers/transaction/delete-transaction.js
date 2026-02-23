@@ -1,9 +1,11 @@
+import { ForbiddenError, TransactionNotFoundError } from '../../errors/user.js'
 import {
   serverError,
   checkIfIdIsValid,
   invalidIdResponse,
   ok,
-  transactionNotFoundResponse,
+  notFound,
+  forbidden,
 } from '../helpers/index.js'
 
 export class DeleteTransactionController {
@@ -13,26 +15,36 @@ export class DeleteTransactionController {
   async execute(httpRequest) {
     try {
       const transactionId = httpRequest.params.transactionId
-      const userId = httpRequest.params.user_id
+      const userId = httpRequest.userId
 
-      const transactionIdIsValid = checkIfIdIsValid(httpRequest.params.transactionId)
-      const userIdIsValid = checkIfIdIsValid(httpRequest.params.user_id)
+      const transactionIdIsValid = checkIfIdIsValid(
+        httpRequest.params.transactionId,
+      )
 
-      if (!transactionIdIsValid || ! userIdIsValid) {
+      if (!transactionIdIsValid) {
         return invalidIdResponse()
       }
 
       const deletedTransaction = await this.deleteTransactionUseCase.execute(
         transactionId,
-        userId
+        userId,
       )
 
       if (!deletedTransaction) {
-        return transactionNotFoundResponse()
+        return TransactionNotFoundError()
       }
 
       return ok(deletedTransaction)
     } catch (error) {
+
+      if (error instanceof TransactionNotFoundError) {
+        return notFound(error.message)
+      }
+
+      if (error instanceof ForbiddenError) {
+        return forbidden(error.message)
+      }
+
       console.error(error)
       return serverError()
     }
