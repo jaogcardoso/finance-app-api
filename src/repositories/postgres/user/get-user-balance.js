@@ -1,11 +1,18 @@
 import { prisma } from '../../../../prisma/prisma.js'
 
 export class PostgresGetUserBalanceRepository {
-  async execute(userId) {
+  async execute(userId, from, to) {
+    const dateFilter = {
+      date: {
+        gte: new Date(from),
+        lte: new Date(to),
+      },
+    }
     const totalExpenses = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
         type: 'EXPENSE',
+        ...dateFilter,
       },
       _sum: {
         value: true,
@@ -16,6 +23,7 @@ export class PostgresGetUserBalanceRepository {
       where: {
         user_id: userId,
         type: 'EARNING',
+        ...dateFilter,
       },
       _sum: {
         value: true,
@@ -25,6 +33,7 @@ export class PostgresGetUserBalanceRepository {
       where: {
         user_id: userId,
         type: 'INVESTMENT',
+        ...dateFilter,
       },
       _sum: {
         value: true,
